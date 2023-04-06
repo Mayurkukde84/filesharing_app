@@ -11,10 +11,12 @@ connectDB()
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
+app.set('views',path.join(__dirname,'views'))
+app.set('view engine','ejs')
 
 app.use('/',express.static(path.join(__dirname, 'public')))
 app.use('/',require('./routes/root'))
-app.use('/api/v1',require('./routes/imageUploadRoute'))
+app.use('/',require('./routes/imageUploadRoute'))
 
 app.all('*',(req,res,next)=>{
 res.status(404)
