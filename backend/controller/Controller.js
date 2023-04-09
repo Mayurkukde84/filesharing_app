@@ -30,21 +30,26 @@ const upload = multer({
   limit:{fileSize:100000 * 100} 
 })
 
-const uploadPhoto = upload.single('photo')
+let uploadPhoto = upload.single('image')
 
 const imageUpload = asynHandler(async (req, res) => {
 
-  if(!req.file){
-    return  res.status(404).json({error:'All fields are required'})
-  }
-const file = new FileUpload({
-  filename:req.file.filename,
-  uuid:uuid4(),
-  path:req.file.path,
-  size:req.file.size
-})
-const response = await file.save()
-return res.json({file:`${process.env.LOCALHOST}/files/${response.uuid}`})
+  uploadPhoto(req, res, async (err) => {
+    console.log(req.file)
+    if (err) {
+      return res.status(500).send({ error: err.message });
+    }
+      const file = new FileUpload({
+          filename: req.file.filename,
+          uuid: uuid4(),
+          path: req.file.path,
+          size: req.file.size
+      });
+      const response = await file.save();
+      res.json({ file: `${process.env.LOCALHOST}/files/${response.uuid}` });
+    });
+  
+
 });
 
 const show = asynHandler(async(req,res)=>{
@@ -95,7 +100,7 @@ const send = asynHandler(async(req,res)=>{
     text:`${emailForm} shared a file with you`,
     html: require('../utility/emailTemplate')({
       emailFrom:emailForm,
-      downloadLink:`${process.env.LOCALHOST}/files/${file.uuid}`,
+      downloadLink:`${process.env.LOCALHOST}/files/downloads/${file.uuid}`,
       size:parseInt(file.size/1000) + ' KB',
       expires:'24 hours'
     })

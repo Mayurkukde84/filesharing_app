@@ -6,7 +6,7 @@ const router = express.Router()
 
 
 
-router.route('/upload').post(Upload.uploadPhoto,Upload.imageUpload)
+router.route('/upload').post(Upload.imageUpload)
 router.route('/:uuid').get(Upload.show)
 router.route('/files/downloads/:uuid').get(Upload.downloadFile)
 router.route('/api/files/send').post(Upload.send)
