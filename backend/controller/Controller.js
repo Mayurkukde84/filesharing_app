@@ -37,16 +37,21 @@ const imageUpload = asynHandler(async (req, res) => {
   uploadPhoto(req, res, async (err) => {
     console.log(req.file)
     if (err) {
-      return res.status(500).send({ error: err.message });
+      return res.status(500).send({ err: err.message });
+    }
+    
+    if(!req.file){
+      return res.status(401).json({message:'please upload file'})
     }
       const file = new FileUpload({
-          filename: req.file.filename,
+          filename:req.file.filename,
           uuid: uuid4(),
-          path: req.file.path,
-          size: req.file.size
+          path:req.file.path,
+          size:req.file.size
       });
+      
       const response = await file.save();
-      res.json({ file: `${process.env.LOCALHOST}/files/${response.uuid}` });
+      res.status(200).json({ file: `${process.env.LOCALHOST}/files/${response.uuid}`,uuid:response.uuid });
     });
   
 
@@ -78,7 +83,7 @@ res.download(filepath)
 
 const send = asynHandler(async(req,res)=>{
   const {uuid,emailTo,emailForm} = req.body
-
+console.log(req.body)
   if(!uuid || !emailTo || !emailForm){
     return res.status(422).send({error:"All fields are required"})
   }
@@ -96,7 +101,7 @@ const send = asynHandler(async(req,res)=>{
   sendMail({
     from:emailForm,
     to:emailTo,
-    subject:'inShare file sharing',
+    subject:'file share',
     text:`${emailForm} shared a file with you`,
     html: require('../utility/emailTemplate')({
       emailFrom:emailForm,

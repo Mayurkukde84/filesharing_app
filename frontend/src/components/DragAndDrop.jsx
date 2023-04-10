@@ -8,21 +8,17 @@ const DragAndDrop = () => {
 
   const handleChange = async(file) => {
     setFile(file);
-    console.log(file)
-    
-    fetch("http://localhost:5000/upload", {
-      mode: 'no-cors',
-      method: "POST",
-      body: data
-    }).then(function (res) {
-      if (res.ok) {
-        alert("Perfect! ");
-      } else if (res.status == 401) {
-        alert("Oops! ");
-      }
-    }, function (e) {
-      alert("Error submitting form!");
+    const formData = new FormData();
+    formData.append('image',file)
+    await axios.post('http://localhost:5000/upload',formData )
+    .then((res) => {
+      console.log('File uploaded successfully:', res.data.filename);
+    })
+    .catch((err) => {
+      console.error('Error uploading file:', err);
     });
+    
+   
   };
 
   return (

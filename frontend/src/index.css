@@ -7,3 +7,35 @@ body{
   background-color: #ffffff;
   color: #DFAF77;
 }
+section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+ background-color: bisque;
+ height: 25%;
+ width: 35%;
+ padding: 1.5%;
+margin-top: 15px;
+}
+button{
+  margin-top: 2%;
+  height: 30px;
+}
+
+
+.copy-feedback {
+  margin-left: 1rem;
+  visibility: hidden;
+}
+
+.copy-feedback.active {
+  visibility: visible;
+}

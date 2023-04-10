@@ -3,11 +3,13 @@ import React from 'react'
 //import DragAndDrop from '../components/DragAndDrop'
 // import Dropzone from '../components/Dropzone'
 import ImageUpload from '../components/ImageUpload'
+
 const Home = () => {
   
   return (
     <>
-    <ImageUpload/>
+    <ImageUpload />
+ 
    
     </>
   )
